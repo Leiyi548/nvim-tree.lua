@@ -194,6 +194,11 @@ local DEFAULT_KEYMAPS = {
     desc = "close tree window",
   },
   {
+    key = "<BS>",
+    callback = Api.tree.backword,
+    desc = "backword editor",
+  },
+  {
     key = "W",
     callback = Api.tree.collapse_all,
     desc = "collapse the whole tree",

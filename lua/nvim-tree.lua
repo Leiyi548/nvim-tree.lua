@@ -73,7 +73,12 @@ M.on_keypress = require("nvim-tree.actions.dispatch").dispatch
 
 function M.toggle(find_file, no_focus, cwd, bang)
   if view.is_visible() then
-    view.close()
+    if vim.api.nvim_buf_get_option(0, "filetype") == "NvimTree" then
+      vim.cmd "noautocmd wincmd p"
+    else
+      vim.cmd("NvimTreeFindFile")
+    end
+    -- view.close()
   else
     local previous_buf = api.nvim_get_current_buf()
     M.open(cwd)
@@ -436,16 +441,16 @@ local function setup_autocommands(opts)
     })
   end
 
-  if opts.view.float.enable and opts.view.float.quit_on_focus_loss then
-    create_nvim_tree_autocmd("WinLeave", {
-      pattern = "NvimTree_*",
-      callback = function()
-        if utils.is_nvim_tree_buf(0) then
-          view.close()
-        end
-      end,
-    })
-  end
+  -- if opts.view.float.enable and opts.view.float.quit_on_focus_loss then
+  --   create_nvim_tree_autocmd("WinLeave", {
+  --     pattern = "NvimTree_*",
+  --     callback = function()
+  --       if utils.is_nvim_tree_buf(0) then
+  --         view.close()
+  --       end
+  --     end,
+  --   })
+  -- end
 end
 
 local DEFAULT_OPTS = { -- BEGIN_DEFAULT_OPTS
