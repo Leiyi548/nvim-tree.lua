@@ -71,6 +71,20 @@ end
 ---@deprecated
 M.on_keypress = require("nvim-tree.actions.dispatch").dispatch
 
+
+function M.goTree(find_file, no_focus, cwd, bang)
+  if view.is_visible() then
+    if vim.api.nvim_buf_get_option(0, "filetype") == "NvimTree" then
+      vim.cmd "noautocmd wincmd p"
+    else
+      vim.cmd("NvimTreeToggle")
+    end
+  else
+    return
+  end
+end
+
+
 function M.toggle(find_file, no_focus, cwd, bang)
   if view.is_visible() then
     if vim.api.nvim_buf_get_option(0, "filetype") == "NvimTree" then
@@ -306,6 +320,9 @@ local function setup_vim_commands()
     M.open(res.args)
   end, { nargs = "?", complete = "dir" })
   api.nvim_create_user_command("NvimTreeClose", view.close, { bar = true })
+  api.nvim_create_user_command("NvimTreeGoTree", function(res)
+    M.goTree(false, false, res.args)
+  end, { nargs = "?", complete = "dir" })
   api.nvim_create_user_command("NvimTreeToggle", function(res)
     M.toggle(false, false, res.args)
   end, { nargs = "?", complete = "dir" })

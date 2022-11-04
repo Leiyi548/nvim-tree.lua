@@ -39,7 +39,8 @@ local M = {}
 -- end
 --
 function M.fn(should_close)
-  vim.cmd "noautocmd wincmd p"
+  should_close = should_close or false
+  vim.cmd "wincmd h"
 end
 
 return M
